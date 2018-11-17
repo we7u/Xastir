@@ -5276,7 +5276,9 @@ void station_data_fill_in ( Widget w, XtPointer clientData, XtPointer calldata )
         }
         xastir_snprintf(temp_my_course, sizeof(temp_my_course), "%s\xB0",temp1_my_course);
         xastir_snprintf(temp, sizeof(temp), langcode("WPUPSTI022"),temp_my_distance,temp_my_course);
+        set_to_C_locale();
         XmTextInsert(si_text,pos,temp);
+        restore_from_C_locale();
         pos += strlen(temp);
     }
 
@@ -5359,7 +5361,10 @@ void station_data_fill_in ( Widget w, XtPointer clientData, XtPointer calldata )
     else
         xastir_snprintf(temp, sizeof(temp), "     ");
 
+    set_to_C_locale();
     XmTextInsert(si_text,pos,temp);
+    restore_from_C_locale();
+
     pos += strlen(temp);
 
     // dl9sau
@@ -5496,7 +5501,9 @@ void station_data_fill_in ( Widget w, XtPointer clientData, XtPointer calldata )
             else
                 xastir_snprintf(temp, sizeof(temp), "     ");
 
+            set_to_C_locale();
             XmTextInsert(si_text,pos,temp);
+            restore_from_C_locale();
             pos += strlen(temp);
 
             // dl9sau
@@ -8302,10 +8309,14 @@ void exp_trailpos(FILE *f,long lat,long lon,time_t sec,long speed,int course,lon
         else        // undefined
             fprintf(f,"          ");
         
-        if (course >= 0)                    // DK7IN: is 0 undefined ?? 1..360 ?
-            fprintf(f," %3d\xB0\n",course);
-        else        // undefined
-            fprintf(f,"     \n");
+            if (course >= 0)                    // DK7IN: is 0 undefined ?? 1..360 ?
+            {
+                set_to_C_locale();
+                fprintf(f," %3d\xB0\n",course);
+                restore_from_C_locale();
+            }
+            else        // undefined
+                fprintf(f,"     \n");
     }
 }
 
