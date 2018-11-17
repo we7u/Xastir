@@ -5276,9 +5276,7 @@ void station_data_fill_in ( Widget w, XtPointer clientData, XtPointer calldata )
         }
         xastir_snprintf(temp_my_course, sizeof(temp_my_course), "%s\xB0",temp1_my_course);
         xastir_snprintf(temp, sizeof(temp), langcode("WPUPSTI022"),temp_my_distance,temp_my_course);
-        set_to_C_locale();
         XmTextInsert(si_text,pos,temp);
-        restore_from_C_locale();
         pos += strlen(temp);
     }
 
@@ -5361,10 +5359,7 @@ void station_data_fill_in ( Widget w, XtPointer clientData, XtPointer calldata )
     else
         xastir_snprintf(temp, sizeof(temp), "     ");
 
-    set_to_C_locale();
     XmTextInsert(si_text,pos,temp);
-    restore_from_C_locale();
-
     pos += strlen(temp);
 
     // dl9sau
@@ -5501,9 +5496,7 @@ void station_data_fill_in ( Widget w, XtPointer clientData, XtPointer calldata )
             else
                 xastir_snprintf(temp, sizeof(temp), "     ");
 
-            set_to_C_locale();
             XmTextInsert(si_text,pos,temp);
-            restore_from_C_locale();
             pos += strlen(temp);
 
             // dl9sau
