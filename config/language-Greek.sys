@@ -522,7 +522,7 @@ WPUPCFT025|Αυτόματος Εντοπισμός||
 WPUPCFT026|Binary Type||
 WPUPCFT027|ASCII Type||
 WPUPCFT028|Ρύθμιση TNC w/AUX GPS||
-WPUPCFT029|Ρύθμιση TNC w/INVALID ENUM||
+WPUPCFT029|Ρύθμιση TNC w/INVALID ENUM: %d||
 WPUPCFT030|Ρύθμιση KISS TNC||
 WPUPCFT031|TNC Αρχεια Ρύθμισης||
 WPUPCFT032|TNC Ορισμός Αρχείου|| 
