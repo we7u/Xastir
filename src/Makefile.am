@@ -9,8 +9,6 @@ DIST_SUBDIRS = rtree
 
 EXTRA_DIST=icon.xbm
 
-# Add in later to check for unsafe string calls:
-#   bsafe.c bsafe.h \
 XASTIR_SRC = \
     alert.c alert.h \
     awk.c awk.h \
