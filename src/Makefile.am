@@ -12,6 +12,7 @@ EXTRA_DIST=icon.xbm
 XASTIR_SRC = \
     alert.c alert.h \
     awk.c awk.h \
+    bstraux.c bstraux.h \
     bstrlib.c bstrlib.h \
     bulletin_gui.c bulletin_gui.h \
     color.c color.h \
