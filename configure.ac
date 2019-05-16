@@ -538,6 +538,9 @@ if test "${use_dbfawk}" = "yes"; then
 fi
 
 
+
+
+
 use_rtree=yes
 LIBRTREE=""
 SUBRTREE=""
@@ -556,10 +559,6 @@ AC_SUBST(SUBRTREE)
 AC_SUBST(LIBRTREE)
 
 
-LIBBSTRING="-Lbstring -lbstring"
-SUBBSTRING="bstring"
-AC_SUBST(SUBBSTRING)
-AC_SUBST(LIBBSTRING)
 
 
 
