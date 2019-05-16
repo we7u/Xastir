@@ -556,6 +556,11 @@ AC_SUBST(SUBRTREE)
 AC_SUBST(LIBRTREE)
 
 
+LIBBSTRING="-Lbstring -lbstring"
+SUBBSTRING="bstring"
+AC_SUBST(SUBBSTRING)
+AC_SUBST(LIBBSTRING)
+
 
 
 AC_ARG_ENABLE(davis, [  --enable-davis          Turn on Davis support],
@@ -888,6 +893,7 @@ AC_CONFIG_FILES([Makefile \
     m4/Makefile \
     scripts/Makefile \
     src/Makefile \
+    src/bstring/Makefile \
     src/rtree/Makefile \
     symbols/Makefile \
     xastir.spec \
