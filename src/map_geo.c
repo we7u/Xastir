@@ -2958,17 +2958,17 @@ void draw_geo_image_map (Widget w,
 #ifdef HAVE_MAGICK
   if (image)
   {
-  DestroyImage(image);
+    DestroyImage(image);
   }
   if (image_info)
   {
-  DestroyImageInfo(image_info);
+    DestroyImageInfo(image_info);
   }
   DestroyExceptionInfo(&exception);
 #else   // HAVE_MAGICK
   if (xi)
   {
-  XDestroyImage (xi);
+    XDestroyImage (xi);
   }
 #endif // HAVE_MAGICK
 
