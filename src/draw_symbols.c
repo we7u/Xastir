@@ -40,6 +40,7 @@
 #include "util.h"
 #include "color.h"
 #include "maps.h"
+#include "xa_config.h"
 
 // Must be last include file
 #include "leak_detection.h"
