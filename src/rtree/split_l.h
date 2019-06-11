@@ -21,12 +21,12 @@
  * Look at the README for more information on the program.
  */
 /****************************************************************************
- * MODULE:       R-Tree library 
- *              
+ * MODULE:       R-Tree library
+ *
  * AUTHOR(S):    Antonin Guttman - original code
  *               Melinda Green (melinda@superliminal.com) - major clean-up
  *                               and implementation of bounding spheres
- *               
+ *
  * PURPOSE:      Multidimensional index
  *
  */
@@ -44,10 +44,10 @@ struct Rect Xastir_CoverSplit;
 /* variables for finding a partition */
 struct PartitionVars
 {
-	int partition[MAXCARD+1];
-	int total, minfill;
-	int taken[MAXCARD+1];
-	int count[2];
-	struct Rect cover[2];
-	RectReal area[2];
+  int partition[MAXCARD+1];
+  int total, minfill;
+  int taken[MAXCARD+1];
+  int count[2];
+  struct Rect cover[2];
+  RectReal area[2];
 } Xastir_Partitions[METHODS];

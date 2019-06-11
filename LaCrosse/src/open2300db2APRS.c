@@ -11,11 +11,11 @@
  * This file implements all of the database to APRS daemon.
  *
  *
-    
+
         LaCrosse/Data Base Weather --> APRS Weather
 
-        Intended use: 
-		
+        Intended use:
+
         Create & provide APRS style packet string
         without position information from MySQL database
         weather information stored there by open2300
@@ -24,17 +24,17 @@
 
         Note:  Open2300 is a weather data accumulator
         aimed at LaCrosse weather stations, which stores weather
-        data in a mysql database.  
+        data in a mysql database.
 
-        Output is to the ip hostname:port required in the 
+        Output is to the ip hostname:port required in the
         command line.
 
     ACKNOWLEGEMENTS:
 
         Elements of this software are taken from wx200d ver 1.2
         by Tim Witham <twitham@quiknet.com>, and it is modeled
-        after that application and from db2APRS by 
-	Bruce Bennett <bruts@adelphia.net>. 
+        after that application and from db2APRS by
+        Bruce Bennett <bruts@adelphia.net>.
 
 *******************************************************************/
 #include <config.h>
@@ -75,8 +75,8 @@
 
 #define OUTDOOR_SENSOR  1
 
-    //---From the static table "mfield", which really should be dynamically read here---
-    //			(but then I couldn't use a switch statement)
+//---From the static table "mfield", which really should be dynamically read here---
+//    (but then I couldn't use a switch statement)
 
 #define TEMPERATURE         0
 #define TEMPERATURE_MIN     1
@@ -93,7 +93,7 @@
 #define SOLAR               40
 #define UV                  41
 #define RAIN                50
-    // note: "51" is really rain total
+// note: "51" is really rain total
 #define RAIN_PER_DAY        51
 #define RAIN_PER_HOUR       52
 #define WIND_SPEED          60
@@ -112,11 +112,11 @@
 
 struct dbinfo
 {
-    char user[30];
-    char pswrd[15];
-    char name[30];
+  char user[30];
+  char pswrd[15];
+  char name[30];
 } db;
-	
+
 char *progname;
 char *query;
 int *current = 0;
@@ -150,8 +150,8 @@ void usage(int ret)
   {
     printf("Content-type: text/plain\nStatus: 200\n\n");
   }
-	printf("usage: %s [options] \n",progname);
-	printf("VERSION: %s\n",VERSION);
+  printf("usage: %s [options] \n",progname);
+  printf("VERSION: %s\n",VERSION);
   printf("  -h    --help                      show this help and exit\n");
   printf("  -v    --verbose                   debugging info --> stderr\n");
   printf("  -c    --cport [port#]             IP port for data output\n");
@@ -160,7 +160,7 @@ void usage(int ret)
   printf("  -b    --database [database]       database name - default meteo\n");
   printf("  -n    --nodaemon                  do not run as daemon\n");
   printf("  -r    --repeat                    keep running\n");
-  printf("options may be uniquely abbreviated; units are as defined in APRS\n"); 
+  printf("options may be uniquely abbreviated; units are as defined in APRS\n");
   printf("Specification 1.0.1 for positionless weather data (English/hPa).\n");
   exit(ret);
 }
@@ -175,9 +175,9 @@ void usage(int ret)
 
 *******************************************************************/
 
-int APRS_str(char *APRS_buf, 
+int APRS_str(char *APRS_buf,
              double winddir,
-             double windspeed,				
+             double windspeed,
              double windgust,
              double temp,
              double rain1hr,
@@ -211,7 +211,7 @@ int APRS_str(char *APRS_buf,
         fprintf(stderr,"err: Wind direction > 360\n");
       }
       sprintf(APRS_buf, "c...");
-    } 
+    }
     else if (intval < 0)
     {
       if (debug_level & 1)
@@ -220,12 +220,12 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(APRS_buf, "c...");
 
-    } 
+    }
     else
     {
       sprintf(APRS_buf, "c%0.3d", intval);
     }
-  } 
+  }
   else
   {
     if (debug_level & 1)
@@ -240,7 +240,7 @@ int APRS_str(char *APRS_buf,
   {
     if (Metric_Data)
     {
-      intval = (windspeed*MTPS2MPH + 0.5); // converting & rounding to whole MPH 
+      intval = (windspeed*MTPS2MPH + 0.5); // converting & rounding to whole MPH
     }
     else
     {
@@ -254,7 +254,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "s...");
 
-    } 
+    }
     else if (intval < 0)
     {
       if (debug_level & 1)
@@ -263,12 +263,12 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "s...");
 
-    } 
+    }
     else
     {
       sprintf(pbuf, "s%0.3d", intval);
     }
-  } 
+  }
   else
   {
     if (debug_level & 1)
@@ -298,7 +298,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "g...");
 
-    } 
+    }
     else if (intval < 0)
     {
       if (debug_level & 1)
@@ -307,23 +307,23 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "g...");
 
-    } 
+    }
     else
     {
       sprintf(pbuf, "g%0.3d", intval);
     }
 
-  } 
+  }
   else
   {
-	  if (debug_level & 1)
+    if (debug_level & 1)
     {
       fprintf(stderr,"info: Wind gust flagged as invalid\n");
     }
     sprintf(pbuf, "g...");
 
   }
-	strcat(APRS_buf,pbuf);
+  strcat(APRS_buf,pbuf);
 
   if (valid_data_flgs & VALID_TEMP)
   {
@@ -343,7 +343,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "t...");
 
-    } 
+    }
     else if (intval < -99)
     {
       if (debug_level & 1)
@@ -352,7 +352,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "t...");
 
-    } 
+    }
     else
     {
       if (intval < 0)
@@ -365,7 +365,7 @@ int APRS_str(char *APRS_buf,
       }
     }
 
-  } 
+  }
   else
   {
     if (debug_level & 1)
@@ -395,7 +395,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-    } 
+    }
     else if (intval < -99)
     {
       if (debug_level & 1)
@@ -404,15 +404,15 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-    } 
+    }
     else
     {
       sprintf(pbuf, "r%0.3d", intval);
     }
-  } 
+  }
   else
   {
-	
+
     if (debug_level & 1)
     {
       fprintf(stderr,"info: Rainfall/Hr flagged as invalid\n");
@@ -440,7 +440,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "p999");
 
-    } 
+    }
     else if (intval < -99)
     {
       if (debug_level & 1)
@@ -449,12 +449,12 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-    } 
+    }
     else
     {
       sprintf(pbuf, "p%0.3d", intval);
     }
-  } 
+  }
   else
   {
     if (debug_level & 1)
@@ -478,7 +478,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-	  } 
+    }
     else if (intval < 1)
     {
       if (debug_level & 1)
@@ -487,7 +487,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-    } 
+    }
     else
     {
       if (intval == 100)  // Report 100% as 'h00'
@@ -496,7 +496,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "h%0.2d", intval);
     }
-  } 
+  }
   else
   {
     if (debug_level & 1)
@@ -526,7 +526,7 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-    } 
+    }
     else if (intval < 0)
     {
       if (debug_level & 1)
@@ -535,12 +535,12 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0");
 
-    } 
+    }
     else
     {
       sprintf(pbuf, "b%0.5d", intval);
-		}
-	}
+    }
+  }
   else
   {
     if (debug_level & 1)
@@ -568,16 +568,16 @@ int APRS_str(char *APRS_buf,
       intval = (raintot*100.0 + 0.5); // rounding to whole 1/100 inch
     }
 
-    // Can't handle greater than 99.99 inches of total rain 
+    // Can't handle greater than 99.99 inches of total rain
     if (intval > 9999)
-    { 
+    {
       if (debug_level & 1)
       {
         fprintf(stderr,"err: total Rainfall  > 99.99 inch - reporting 9.99 inches\n");
       }
       sprintf(pbuf, "T9999");
 
-    } 
+    }
     else if (intval < -99)
     {
       if (debug_level & 1)
@@ -586,12 +586,12 @@ int APRS_str(char *APRS_buf,
       }
       sprintf(pbuf, "\0\0\0\0\0");
 
-    } 
+    }
     else
     {
       sprintf(pbuf, "T%0.4d", intval);
     }
-  } 
+  }
   else
   {
     if (debug_level & 1)
@@ -623,7 +623,7 @@ int APRS_str(char *APRS_buf,
 *******************************************************************/
 
 int Get_Latest_WX( double *winddir,
-                   double *windspeed,				
+                   double *windspeed,
                    double *windgust,
                    double *temp,
                    double *rain1hr,
@@ -640,7 +640,7 @@ int Get_Latest_WX( double *winddir,
   int nrows, item_count;
   int nfields;
 
-		
+
   // Find latest, see if it's new to us
   // --new to us is a simple timestamp follower, so upon startup
   // it will always read one set of data, assuming any exists
@@ -653,7 +653,7 @@ int Get_Latest_WX( double *winddir,
     }
     return 0;
   }
-	
+
   if (!(result = mysql_store_result(&mysql)))
   {
     if (debug_level & 1)
@@ -662,7 +662,7 @@ int Get_Latest_WX( double *winddir,
     }
     return 0;
   }
-	
+
   if (mysql_num_rows(result) != 1 )
   {
     if (debug_level & 1)
@@ -674,9 +674,9 @@ int Get_Latest_WX( double *winddir,
     mysql_free_result(result);
     return 0;
   }
-	
+
   row = mysql_fetch_row(result);
-	
+
   if ( row[0] == NULL )
   {
     if (debug_level & 1)
@@ -688,7 +688,7 @@ int Get_Latest_WX( double *winddir,
     return 0;
   }
   // if no new data. exit with negative status
-		
+
   if (!strncmp(last_timestamp, row[0], 14))
   {
     if (debug_level & 1)
@@ -699,13 +699,13 @@ int Get_Latest_WX( double *winddir,
     mysql_free_result(result);
     return -1;
   }
-  strcpy(last_timestamp, row[0]);	  // For next pass & following query
+  strcpy(last_timestamp, row[0]);   // For next pass & following query
 
   if ( debug_level & 1)
   {
     fprintf(stdout,"Timestamp: %s\n",last_timestamp);
   }
-	
+
   // release query buffer
   mysql_free_result(result);
 
@@ -754,7 +754,7 @@ int Get_Latest_WX( double *winddir,
 
   //WIND_DIRECTION :
   *winddir = strtod(row[0],NULL);
-  *valid_data_flgs |= VALID_WINDDIR;  
+  *valid_data_flgs |= VALID_WINDDIR;
   item_count++;
   if (debug_level & 1)
   {
@@ -764,7 +764,7 @@ int Get_Latest_WX( double *winddir,
   //case WIND_SPEED :
   *windspeed = strtod(row[1],NULL);
   *windspeed = *windspeed * 1.15077945; // Convert from knots to mph
-  *valid_data_flgs |= VALID_WINDSPD;  
+  *valid_data_flgs |= VALID_WINDSPD;
   item_count++;
   if (debug_level & 1)
   {
@@ -791,7 +791,7 @@ int Get_Latest_WX( double *winddir,
 
   //case RAIN_PER_HOUR :
   *rain1hr = strtod(row[3],NULL);
-  *valid_data_flgs |= VALID_RAIN1HR;  
+  *valid_data_flgs |= VALID_RAIN1HR;
   item_count++;
   if (debug_level & 1)
   {
@@ -800,7 +800,7 @@ int Get_Latest_WX( double *winddir,
 
   //case RAIN_PER_DAY :
   *rain24h = strtod(row[4],NULL);
-  *valid_data_flgs |= VALID_RAIN24H;  
+  *valid_data_flgs |= VALID_RAIN24H;
   item_count++;
   if (debug_level & 1)
   {
@@ -827,7 +827,7 @@ int Get_Latest_WX( double *winddir,
 
   //case  RAIN_TOTAL
   *raintot = strtod(row[7],NULL);
-  *valid_data_flgs |= VALID_RAINTOT;  
+  *valid_data_flgs |= VALID_RAINTOT;
   item_count++;
   if (debug_level & 1)
   {
@@ -835,7 +835,7 @@ int Get_Latest_WX( double *winddir,
   }
 
   *Metric_Data = 0;  // My station reports F, knots and inHG
-  // release query buffer	& close connection
+  // release query buffer & close connection
   mysql_free_result(result);
 
   if (debug_level & 1)
@@ -844,8 +844,8 @@ int Get_Latest_WX( double *winddir,
             item_count);
   }
 
-    return item_count;
-}				
+  return item_count;
+}
 
 
 
@@ -856,17 +856,17 @@ int Get_Latest_WX( double *winddir,
             SIGPIPE signal handler
 
 *******************************************************************/
-void pipe_handler(int sig)		/*  */
+void pipe_handler(int sig)  /*  */
 {
   signal(SIGPIPE, SIG_IGN);
-  if (sig == SIGPIPE) 		// client went bye-bye
+  if (sig == SIGPIPE)   // client went bye-bye
   {
-    shutdown(*current, 2); 
+    shutdown(*current, 2);
     close(*current);
     *current = -1;
     if (debug_level & 1)
     {
-      fprintf(stderr, "info: %s - TCP client timed out", progname); 
+      fprintf(stderr, "info: %s - TCP client timed out", progname);
     }
   }
 }
@@ -880,14 +880,14 @@ void pipe_handler(int sig)		/*  */
             SIGTERM signal handler
 
 *******************************************************************/
-void term_handler( int UNUSED(sig) )		/*  */
+void term_handler( int UNUSED(sig) )  /*  */
 {
   if (debug_level & 1)
   {
     fprintf(stderr, "info: %s - ordered to DIE, complying", progname);
   }
 
-  // release query buffer	& close connection
+  // release query buffer & close connection
   mysql_free_result(result);
 
   mysql_close(&mysql);
@@ -910,7 +910,7 @@ int main(int argc, char **argv)
   char WX_APRS[120];
   int data_len = 0 ;
   double winddir;
-  double windspeed;				
+  double windspeed;
   double windgust;
   double temp;
   double rain1hr;
@@ -946,7 +946,7 @@ int main(int argc, char **argv)
 
   debug_level = 0;
 
-  strcpy(db.user,"open2300");	 // set default values for database access
+  strcpy(db.user,"open2300"); // set default values for database access
   strcpy(db.name,"open2300");
   memset(db.pswrd,0,15);
 
@@ -964,8 +964,8 @@ int main(int argc, char **argv)
   }
 
   while ((opt = getopt_long(argc, argv, flags, longopt, &index)) != EOF)
-  { 
-    switch (opt) 		/* parse command-line or CGI options */
+  {
+    switch (opt)  /* parse command-line or CGI options */
     {
       case 'r':
         repetitive = 1;
@@ -974,22 +974,22 @@ int main(int argc, char **argv)
         fprintf(stdout,"Verbose mode set:\n");
         debug_level = 1;
         break;
-      case 'u':	 // mysql username 
+      case 'u': // mysql username
         strncpy(db.user,(char *)optarg,30);
         break;
-      case 'p':	 // mysql password 
+      case 'p': // mysql password
         strncpy(db.pswrd,(char *)optarg,15);
         break;
-      case 'd':	 // mysql database name
+      case 'd': // mysql database name
         strncpy(db.name,(char *)optarg,30);
         break;
-      case 'n':			/* do not fork and become a daemon */
+      case 'n': /* do not fork and become a daemon */
         not_a_daemon = 1;
         break;
-      case 'c':			/* port to use */
+      case 'c': /* port to use */
         tcp_wx_port = strtol(optarg, NULL, 0);
         break;
- 
+
       case '?':
       case 'h':
       case 'H':
@@ -1024,8 +1024,8 @@ int main(int argc, char **argv)
   }
 
   // Data base connection
-	
-	
+
+
   if (!(mysql_real_connect(&mysql, "localhost", db.user, db.pswrd, db.name, 0, NULL, 0)))
   {
     if (debug_level & 1)
@@ -1035,7 +1035,7 @@ int main(int argc, char **argv)
     }
     exit(9);
   }
-	                                                                        
+
   server.sin_family = AF_INET;
   bind_address.s_addr = htonl(INADDR_ANY);
   server.sin_addr = bind_address;
@@ -1084,18 +1084,21 @@ int main(int argc, char **argv)
   }
 
   umask(0022);
-  for (i = 0; i < CONNECTIONS; i++) fd[i] = -1;
+  for (i = 0; i < CONNECTIONS; i++)
+  {
+    fd[i] = -1;
+  }
   tv.tv_sec = 0;
   tv.tv_usec = 0;
 
-  if (!not_a_daemon) 			/* setup has worked; now become a daemon? */
+  if (!not_a_daemon)  /* setup has worked; now become a daemon? */
   {
 
     if ((pid = fork()) == -1)
     {
-      syslog(LOG_ERR, "can't fork() to become daemon: %m"); 
+      syslog(LOG_ERR, "can't fork() to become daemon: %m");
       exit(20);
-    } 
+    }
     else if (pid)
     {
       exit (0);
@@ -1123,10 +1126,10 @@ int main(int argc, char **argv)
   }
   dly_cnt = 1;  //N0VH, change back to 1
   do
-  {	
+  {
     if (!(dly_cnt--))
-    {	 
-      dly_cnt = 25;		// Every 'dly_cnt' passes check for WX data update
+    {
+      dly_cnt = 25; // Every 'dly_cnt' passes check for WX data update
       if ((dsts = Get_Latest_WX(&winddir,&windspeed,&windgust,
                                 &temp,&rain1hr,&rain24h,&raintot,
                                 &humidity,&airpressure,
@@ -1135,7 +1138,7 @@ int main(int argc, char **argv)
         if ( dsts > 0 )
         {
           data_len = APRS_str(WX_APRS, winddir,windspeed,windgust,
-                              temp, rain1hr, rain24h, raintot, 
+                              temp, rain1hr, rain24h, raintot,
                               humidity, airpressure,
                               valid_data_flgs, Metric_Data);
 
@@ -1143,12 +1146,12 @@ int main(int argc, char **argv)
           {
             if (debug_level & 1)
             {
-              fprintf(stderr, "err: WX info formatting problem!");                    
+              fprintf(stderr, "err: WX info formatting problem!");
             }
             exit(13);
           }
         }
-      } 
+      }
       else
       {
         exit(dsts);
@@ -1182,7 +1185,7 @@ int main(int argc, char **argv)
           {
             fprintf(stdout," #");
           }
-            signal(SIGPIPE, pipe_handler);
+          signal(SIGPIPE, pipe_handler);
           write(*current, WX_APRS, data_len);
         }
         if (debug_level & 1)
@@ -1191,8 +1194,9 @@ int main(int argc, char **argv)
         }
       }
     }
-    sleep(1);	 // 	   
-  } while (repetitive);
+    sleep(1);  //
+  }
+  while (repetitive);
 
   mysql_close(&mysql);
 

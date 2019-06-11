@@ -21,12 +21,12 @@
  * Look at the README for more information on the program.
  */
 /****************************************************************************
- * MODULE:       R-Tree library 
- *              
+ * MODULE:       R-Tree library
+ *
  * AUTHOR(S):    Antonin Guttman - original code
  *               Melinda Green (melinda@superliminal.com) - major clean-up
  *                               and implementation of bounding spheres
- *               
+ *
  * PURPOSE:      Multidimensional index
  *
  */
@@ -34,8 +34,8 @@
 #define _INDEX_
 
 /* PGSIZE is normally the natural page size of the machine */
-#define PGSIZE	512
-#define NUMDIMS	2	/* number of dimensions */
+#define PGSIZE  512
+#define NUMDIMS 2 /* number of dimensions */
 #define NDEBUG
 
 // This is what GRASS does
@@ -50,25 +50,25 @@ typedef float RectReal;
 -----------------------------------------------------------------------------*/
 
 #ifndef TRUE
-#define TRUE 1
+  #define TRUE 1
 #endif
 #ifndef FALSE
-#define FALSE 0
+  #define FALSE 0
 #endif
 
 #define NUMSIDES 2*NUMDIMS
 
 struct Rect
 {
-	RectReal boundary[NUMSIDES]; /* xmin,ymin,...,xmax,ymax,... */
+  RectReal boundary[NUMSIDES]; /* xmin,ymin,...,xmax,ymax,... */
 };
 
 struct Node;
 
 struct Branch
 {
-	struct Rect rect;
-	struct Node *child;
+  struct Rect rect;
+  struct Node *child;
 };
 
 /* max branching factor of a node */
@@ -76,15 +76,15 @@ struct Branch
 
 struct Node
 {
-	int count;
-	int level; /* 0 is leaf, others positive */
-	struct Branch branch[MAXCARD];
+  int count;
+  int level; /* 0 is leaf, others positive */
+  struct Branch branch[MAXCARD];
 };
 
 struct ListNode
 {
-	struct ListNode *next;
-	struct Node *node;
+  struct ListNode *next;
+  struct Node *node;
 };
 
 /*

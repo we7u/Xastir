@@ -69,11 +69,12 @@
 
 
 
-
-
 // Storage for the saved locale strings
 char *saved_locale_LC_NUMERIC;
 char *saved_locale_LC_CTYPE;
+
+
+
 
 
 void set_to_C_locale (void)
